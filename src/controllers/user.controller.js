@@ -3,28 +3,66 @@ import User from "../models/User.js";
 export const getUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password");
-    res.json(users);
+    res.json({
+      status: "success",
+      payload: users,
+    });
   } catch (err) {
-    res.status(500).json({ message: "Error fetching users", error: err.message });
+    res.status(500).json({
+      status: "error",
+      message: "Error fetching users",
+      error: err.message,
+    });
   }
 };
 
 export const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select("-password");
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    res.json(user);
+    if (!user) {
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
+    res.json({
+      status: "success",
+      payload: user,
+    });
   } catch (err) {
-    res.status(500).json({ message: "Error fetching user", error: err.message });
+    res.status(500).json({
+      status: "error",
+      message: "Error fetching user",
+      error: err.message,
+    });
   }
 };
 
 export const updateUser = async (req, res) => {
   try {
     const { username, country } = req.body;
-    const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: "User not found" });
+
+    if (username !== undefined && username.trim() === "") {
+      return res.status(400).json({
+        status: "error",
+        message: "Username cannot be empty",
+      });
+    }
+
+    if (country !== undefined && country.trim() === "") {
+      return res.status(400).json({
+        status: "error",
+        message: "Country cannot be empty",
+      });
+    }
+
+    const user = await User.findById(req.params.id).select("-password");
+    if (!user) {
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
 
     if (username) user.username = username;
     if (country) user.country = country;
@@ -33,19 +71,39 @@ export const updateUser = async (req, res) => {
 
     await user.save();
 
-    res.json({ message: "User updated successfully" });
+    res.json({
+      status: "success",
+      message: "User updated successfully",
+      payload: user,
+    });
   } catch (err) {
-    res.status(500).json({ message: "Error updating user", error: err.message });
+    res.status(500).json({
+      status: "error",
+      message: "Error updating user",
+      error: err.message,
+    });
   }
 };
 
 export const deleteUser = async (req, res) => {
   try {
-    const deleted = await User.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ message: "User not found" });
-
-    res.json({ message: "User deleted" });
+    const deleted = await User.findByIdAndDelete(req.params.id).select("-password");
+    if (!deleted) {
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
+    res.json({
+      status: "success",
+      message: "User deleted",
+      payload: deleted,
+    });
   } catch (err) {
-    res.status(500).json({ message: "Error deleting user", error: err.message });
+    res.status(500).json({
+      status: "error",
+      message: "Error deleting user",
+      error: err.message,
+    });
   }
 };

@@ -6,15 +6,29 @@ import User from "../models/User.js";
 export const createExpense = async (req, res) => {
   try {
     const { amount, category, date, userId } = req.body;
-    if (!amount || !category || !userId)
-      return res.status(400).json({ message: "Amount, category and userId are required" });
+
+    if (!amount || !category || !userId) {
+      return res.status(400).json({
+        status: "error",
+        message: "Amount, category and userId are required",
+      });
+    }
 
     const userExists = await User.findById(userId);
-    if (!userExists) return res.status(404).json({ message: "User not found" });
+    if (!userExists) {
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
 
     const categoryExists = await Category.findById(category);
-    if (!categoryExists)
-      return res.status(404).json({ message: "Category not found" });
+    if (!categoryExists) {
+      return res.status(404).json({
+        status: "error",
+        message: "Category not found",
+      });
+    }
 
     const expense = await Expense.create({
       amount,
@@ -23,69 +37,132 @@ export const createExpense = async (req, res) => {
       user: userId,
     });
 
-    res.status(201).json(expense);
+    res.status(201).json({
+      status: "success",
+      message: "Expense created successfully",
+      payload: expense,
+    });
   } catch (err) {
-    res.status(500).json({ message: "Error creating expense", error: err.message });
+    res.status(500).json({
+      status: "error",
+      message: "Error creating expense",
+      error: err.message,
+    });
   }
 };
 
 export const getExpenses = async (req, res) => {
   try {
     const { userId } = req.query;
-    if (!userId) return res.status(400).json({ message: "userId is required" });
+    if (!userId) {
+      return res.status(400).json({
+        status: "error",
+        message: "userId is required",
+      });
+    }
 
     const userExists = await User.findById(userId);
     if (!userExists) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
     }
 
     const expenses = await Expense.find({ user: userId })
       .populate("category", "name color")
       .sort({ date: -1 });
 
-    res.json(expenses);
+    res.json({
+      status: "success",
+      message: "Expenses fetched successfully",
+      payload: expenses,
+    });
   } catch (err) {
-    res.status(500).json({ message: "Error fetching expenses", error: err.message });
+    res.status(500).json({
+      status: "error",
+      message: "Error fetching expenses",
+      error: err.message,
+    });
   }
 };
 
 export const updateExpense = async (req, res) => {
   try {
     const expense = await Expense.findById(req.params.id);
-    if (!expense) return res.status(404).json({ message: "Expense not found" });
+    if (!expense) {
+      return res.status(404).json({
+        status: "error",
+        message: "Expense not found",
+      });
+    }
 
     const userExists = await User.findById(expense.user);
-    if (!userExists) return res.status(404).json({ message: "User not found" });
+    if (!userExists) {
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
 
     if (req.body.category) {
       const categoryExists = await Category.findById(req.body.category);
-      if (!categoryExists)
-        return res.status(404).json({ message: "Category not found" });
+      if (!categoryExists) {
+        return res.status(404).json({
+          status: "error",
+          message: "Category not found",
+        });
+      }
     }
 
     const updated = await Expense.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     }).populate("category", "name color");
 
-    res.json(updated);
+    res.json({
+      status: "success",
+      message: "Expense updated successfully",
+      payload: updated,
+    });
   } catch (err) {
-    res.status(500).json({ message: "Error updating expense", error: err.message });
+    res.status(500).json({
+      status: "error",
+      message: "Error updating expense",
+      error: err.message,
+    });
   }
 };
 
 export const deleteExpense = async (req, res) => {
   try {
     const expense = await Expense.findById(req.params.id);
-    if (!expense) return res.status(404).json({ message: "Expense not found" });
+    if (!expense) {
+      return res.status(404).json({
+        status: "error",
+        message: "Expense not found",
+      });
+    }
 
     const userExists = await User.findById(expense.user);
-    if (!userExists) return res.status(404).json({ message: "User not found" });
+    if (!userExists) {
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
 
     await Expense.findByIdAndDelete(req.params.id);
 
-    res.json({ message: "Expense deleted" });
+    res.json({
+      status: "success",
+      message: "Expense deleted successfully",
+    });
   } catch (err) {
-    res.status(500).json({ message: "Error deleting expense", error: err.message });
+    res.status(500).json({
+      status: "error",
+      message: "Error deleting expense",
+      error: err.message,
+    });
   }
 };
 

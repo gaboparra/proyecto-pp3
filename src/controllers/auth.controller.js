@@ -6,23 +6,41 @@ export const register = async (req, res) => {
     const { username, country, email, password } = req.body;
 
     if (!username || !country || !email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
+      return res.status(400).json({
+        status: "error",
+        message: "All fields are required",
+      });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return res.status(400).json({ message: "Invalid email format" });
+      return res.status(400).json({
+        status: "error",
+        message: "Invalid email format",
+      });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({
+        status: "error",
+        message: "Password must be at least 6 characters long",
+      });
     }
 
     const existingUser = await User.findOne({ email });
-    if (existingUser)
-      return res.status(400).json({ message: "Email already registered" });
+    if (existingUser) {
+      return res.status(400).json({
+        status: "error",
+        message: "Email already registered",
+      });
+    }
 
     const user = await User.create({ username, country, email, password });
 
     res.status(201).json({
+      status: "success",
       message: "User registered successfully",
-      user: {
+      payload: {
         _id: user._id,
         username: user.username,
         country: user.country,
@@ -31,7 +49,11 @@ export const register = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(500).json({ message: "Error registering user", error: err.message });
+    res.status(500).json({
+      status: "error",
+      message: "Error registering user",
+      error: err.message,
+    });
   }
 };
 
@@ -39,25 +61,49 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({
+        status: "error",
+        message: "Email and password are required",
+      });
+    }
+
     const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user) {
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
 
     const isMatch = await user.comparePassword(password);
-    if (!isMatch)
-      return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch) {
+      return res.status(400).json({
+        status: "error",
+        message: "Invalid credentials",
+      });
+    }
 
     const token = generateToken(user._id);
 
     res.json({
-      token,
-      user: {
-        id: user._id,
-        username: user.username,
-        country: user.country,
-        email: user.email,
+      status: "success",
+      message: "Login successful",
+      payload: {
+        token,
+        user: {
+          _id: user._id,
+          username: user.username,
+          country: user.country,
+          email: user.email,
+        },
       },
     });
   } catch (err) {
-    res.status(500).json({ message: "Error logging in", error: err.message });
+    res.status(500).json({
+      status: "error",
+      message: "Error logging in",
+      error: err.message,
+    });
   }
 };

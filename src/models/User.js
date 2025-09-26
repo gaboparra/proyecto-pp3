@@ -32,6 +32,13 @@ userSchema.pre("save", async function (next) {
   }
 });
 
+userSchema.pre("save", function (next) {
+  if (this.country) {
+    this.country = this.country.toLowerCase().trim();
+  }
+  next();
+});
+
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
