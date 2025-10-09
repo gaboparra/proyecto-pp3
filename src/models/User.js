@@ -7,13 +7,13 @@ const userSchema = new mongoose.Schema(
     country: {
       type: String,
       required: true,
-      // enum: ["Argentina", "Chile", "Uruguay", "Brasil"],
     },
     email: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
+      trim: true,
       match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     },
     password: { type: String, required: true, minlength: 6 },

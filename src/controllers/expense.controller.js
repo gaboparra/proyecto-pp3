@@ -1,24 +1,15 @@
 import Expense from "../models/Expense.js";
 import Category from "../models/Category.js";
-import User from "../models/User.js";
-// import mongoose from "mongoose";
 
 export const createExpense = async (req, res) => {
   try {
-    const { amount, category, date, userId } = req.body;
+    const { amount, category, date } = req.body;
+    const userId = req.user._id;
 
-    if (!amount || !category || !userId) {
+    if (!amount || !category) {
       return res.status(400).json({
         status: "error",
-        message: "Amount, category and userId are required",
-      });
-    }
-
-    const userExists = await User.findById(userId);
-    if (!userExists) {
-      return res.status(404).json({
-        status: "error",
-        message: "User not found",
+        message: "Amount and category are required",
       });
     }
 
@@ -53,21 +44,7 @@ export const createExpense = async (req, res) => {
 
 export const getExpenses = async (req, res) => {
   try {
-    const { userId } = req.query;
-    if (!userId) {
-      return res.status(400).json({
-        status: "error",
-        message: "userId is required",
-      });
-    }
-
-    const userExists = await User.findById(userId);
-    if (!userExists) {
-      return res.status(404).json({
-        status: "error",
-        message: "User not found",
-      });
-    }
+    const userId = req.user._id;
 
     const expenses = await Expense.find({ user: userId })
       .populate("category", "name color")
@@ -94,14 +71,6 @@ export const updateExpense = async (req, res) => {
       return res.status(404).json({
         status: "error",
         message: "Expense not found",
-      });
-    }
-
-    const userExists = await User.findById(expense.user);
-    if (!userExists) {
-      return res.status(404).json({
-        status: "error",
-        message: "User not found",
       });
     }
 
@@ -143,14 +112,6 @@ export const deleteExpense = async (req, res) => {
       });
     }
 
-    const userExists = await User.findById(expense.user);
-    if (!userExists) {
-      return res.status(404).json({
-        status: "error",
-        message: "User not found",
-      });
-    }
-
     await Expense.findByIdAndDelete(req.params.id);
 
     res.json({
@@ -165,39 +126,3 @@ export const deleteExpense = async (req, res) => {
     });
   }
 };
-
-// export const getSummary = async (req, res) => {
-//   try {
-//     const { userId } = req.query;
-//     if (!userId) return res.status(400).json({ message: "userId is required" });
-
-//     const userExists = await User.findById(userId);
-//     if (!userExists) return res.status(404).json({ message: "User not found" });
-
-//     const summary = await Expense.aggregate([
-//       { $match: { user: new mongoose.Types.ObjectId(userId) } },
-//       { $group: { _id: "$category", total: { $sum: "$amount" } } },
-//       {
-//         $lookup: {
-//           from: "categories",
-//           localField: "_id",
-//           foreignField: "_id",
-//           as: "category",
-//         },
-//       },
-//       { $unwind: "$category" },
-//       {
-//         $project: {
-//           _id: 0,
-//           category: "$category.name",
-//           color: "$category.color",
-//           total: 1,
-//         },
-//       },
-//     ]);
-
-//     res.json(summary);
-//   } catch (err) {
-//     res.status(500).json({ message: "Error generating summary", error: err.message });
-//   }
-// };

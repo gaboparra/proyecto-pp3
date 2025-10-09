@@ -1,5 +1,31 @@
 import User from "../models/User.js";
 
+export const getMyProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        status: "error",
+        message: "Usuario no encontrado",
+        payload: null,
+      });
+    }
+
+    return res.status(200).json({
+      status: "success",
+      message: "Perfil obtenido correctamente",
+      payload: { user },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: "Error al obtener perfil",
+      payload: { error: error.message },
+    });
+  }
+};
+
 export const getUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password");

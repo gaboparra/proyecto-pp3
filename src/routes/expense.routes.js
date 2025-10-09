@@ -4,15 +4,15 @@ import {
   getExpenses,
   updateExpense,
   deleteExpense,
-  // getSummary,
 } from "../controllers/expense.controller.js";
+import authorization from "../middlewares/authorization.js";
+import isOwner from "../middlewares/isOwner.js";
 
 const router = Router();
 
-router.post("/", createExpense);
-router.get("/", getExpenses);
-router.put("/:id", updateExpense);
-router.delete("/:id", deleteExpense);
-// router.get("/summary", getSummary);
+router.post("/", authorization, createExpense);
+router.get("/", authorization, getExpenses);
+router.put("/:id", authorization, updateExpense);
+router.delete("/:id", authorization, deleteExpense);
 
 export default router;
