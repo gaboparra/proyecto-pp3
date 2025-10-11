@@ -6,7 +6,7 @@ import {
   deleteExpense,
 } from "../controllers/expense.controller.js";
 import authorization from "../middlewares/authorization.js";
-import isOwner from "../middlewares/isOwner.js";
+// import isOwner from "../middlewares/isOwner.js";
 
 const router = Router();
 

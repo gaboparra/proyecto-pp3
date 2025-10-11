@@ -1,3 +1,5 @@
+import logger from "../config/logger.js";
+
 const isOwner = (req, res, next) => {
   try {
     const userIdFromToken = req.user?._id?.toString();
@@ -19,6 +21,7 @@ const isOwner = (req, res, next) => {
 
     next();
   } catch (err) {
+    logger.error("Error in isOwner middleware:", err);
     res.status(500).json({
       status: "error",
       message: "Error validating ownership",

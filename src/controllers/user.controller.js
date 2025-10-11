@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import logger from "../config/logger.js";
 
 export const getMyProfile = async (req, res) => {
   try {
@@ -18,6 +19,7 @@ export const getMyProfile = async (req, res) => {
       payload: { user },
     });
   } catch (error) {
+    logger.error(`Error getting profile: ${error.message}`);
     res.status(500).json({
       status: "error",
       message: "Error al obtener perfil",
@@ -34,6 +36,7 @@ export const getUsers = async (req, res) => {
       payload: users,
     });
   } catch (err) {
+    logger.error(`Error fetching users: ${err.message}`);
     res.status(500).json({
       status: "error",
       message: "Error fetching users",
@@ -56,6 +59,7 @@ export const getUserById = async (req, res) => {
       payload: user,
     });
   } catch (err) {
+    logger.error(`Error fetching user: ${err.message}`);
     res.status(500).json({
       status: "error",
       message: "Error fetching user",
@@ -103,6 +107,7 @@ export const updateUser = async (req, res) => {
       payload: user,
     });
   } catch (err) {
+    logger.error(`Error updating user: ${err.message}`);
     res.status(500).json({
       status: "error",
       message: "Error updating user",
@@ -113,7 +118,9 @@ export const updateUser = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
   try {
-    const deleted = await User.findByIdAndDelete(req.params.id).select("-password");
+    const deleted = await User.findByIdAndDelete(req.params.id).select(
+      "-password"
+    );
     if (!deleted) {
       return res.status(404).json({
         status: "error",
@@ -126,6 +133,7 @@ export const deleteUser = async (req, res) => {
       payload: deleted,
     });
   } catch (err) {
+    logger.error(`Error deleting user: ${err.message}`);
     res.status(500).json({
       status: "error",
       message: "Error deleting user",

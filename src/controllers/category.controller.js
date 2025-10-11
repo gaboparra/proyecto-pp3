@@ -1,4 +1,5 @@
 import Category from "../models/Category.js";
+import logger from "../config/logger.js";
 
 export const createCategory = async (req, res) => {
   try {
@@ -27,6 +28,7 @@ export const createCategory = async (req, res) => {
       payload: category,
     });
   } catch (err) {
+    logger.error(`Error creating category: ${err.message}`);
     res.status(500).json({
       status: "error",
       message: "Error creating category",
@@ -44,6 +46,7 @@ export const getCategories = async (req, res) => {
       payload: categories,
     });
   } catch (err) {
+    logger.error(`Error fetching categories: ${err.message}`);
     res.status(500).json({
       status: "error",
       message: "Error fetching categories",
@@ -78,6 +81,7 @@ export const updateCategory = async (req, res) => {
       payload: updated,
     });
   } catch (err) {
+    logger.error(`Error updating category: ${err.message}`);
     res.status(500).json({
       status: "error",
       message: "Error updating category",
@@ -102,6 +106,7 @@ export const deleteCategory = async (req, res) => {
       message: "Category deleted successfully",
     });
   } catch (err) {
+    logger.error(`Error deleting category: ${err.message}`);
     res.status(500).json({
       status: "error",
       message: "Error deleting category",

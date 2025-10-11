@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import generateToken from "../utils/generateToken.js";
+import logger from "../config/logger.js";
 
 export const register = async (req, res) => {
   try {
@@ -49,6 +50,7 @@ export const register = async (req, res) => {
       },
     });
   } catch (err) {
+    logger.error(`Error registering user: ${err.message}`);
     res.status(500).json({
       status: "error",
       message: "Error registering user",
@@ -100,6 +102,7 @@ export const login = async (req, res) => {
       },
     });
   } catch (err) {
+    logger.error(`Error logging in: ${err.message}`);
     res.status(500).json({
       status: "error",
       message: "Error logging in",

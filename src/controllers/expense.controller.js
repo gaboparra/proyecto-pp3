@@ -1,5 +1,6 @@
 import Expense from "../models/Expense.js";
 import Category from "../models/Category.js";
+import logger from "../config/logger.js";
 
 export const createExpense = async (req, res) => {
   try {
@@ -34,6 +35,7 @@ export const createExpense = async (req, res) => {
       payload: expense,
     });
   } catch (err) {
+    logger.error(`Error creating expense: ${err.message}`);
     res.status(500).json({
       status: "error",
       message: "Error creating expense",
@@ -56,6 +58,7 @@ export const getExpenses = async (req, res) => {
       payload: expenses,
     });
   } catch (err) {
+    logger.error(`Error fetching expenses: ${err.message}`);
     res.status(500).json({
       status: "error",
       message: "Error fetching expenses",
@@ -94,6 +97,7 @@ export const updateExpense = async (req, res) => {
       payload: updated,
     });
   } catch (err) {
+    logger.error(`Error updating expense: ${err.message}`);
     res.status(500).json({
       status: "error",
       message: "Error updating expense",
@@ -119,6 +123,7 @@ export const deleteExpense = async (req, res) => {
       message: "Expense deleted successfully",
     });
   } catch (err) {
+    logger.error(`Error deleting expense: ${err.message}`);
     res.status(500).json({
       status: "error",
       message: "Error deleting expense",
