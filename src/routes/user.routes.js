@@ -13,7 +13,7 @@ const router = Router();
 
 router.get("/me", authorization, getMyProfile);
 router.get("/", authorization, getUsers);
-router.get("/:id", authorization, isOwner, getUserById);
+router.get("/:id", authorization, getUserById);
 router.put("/:id", authorization, isOwner, updateUser);
 router.delete("/:id", authorization, isOwner, deleteUser);
 

@@ -12,15 +12,11 @@ export const createCategory = async (req, res) => {
       });
     }
 
-    const existing = await Category.findOne({ name });
-    if (existing) {
-      return res.status(400).json({
-        status: "error",
-        message: "Category already exists",
-      });
-    }
-
-    const category = await Category.create({ name, color });
+    const category = await Category.create({
+      name,
+      color,
+      user: req.user._id,
+    });
 
     res.status(201).json({
       status: "success",
@@ -39,7 +35,10 @@ export const createCategory = async (req, res) => {
 
 export const getCategories = async (req, res) => {
   try {
-    const categories = await Category.find();
+    const categories = await Category.find({
+      $or: [{ user: null }, { user: req.user._id }],
+    });
+
     res.json({
       status: "success",
       message: "Categories fetched successfully",
@@ -64,16 +63,28 @@ export const updateCategory = async (req, res) => {
       });
     }
 
-    const updated = await Category.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const category = await Category.findById(req.params.id);
 
-    if (!updated) {
+    if (!category) {
       return res.status(404).json({
         status: "error",
         message: "Category not found",
       });
     }
+
+    if (
+      !category.user ||
+      category.user.toString() !== req.user._id.toString()
+    ) {
+      return res.status(403).json({
+        status: "error",
+        message: "Cannot modify this category",
+      });
+    }
+
+    const updated = await Category.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
 
     res.json({
       status: "success",
@@ -92,14 +103,26 @@ export const updateCategory = async (req, res) => {
 
 export const deleteCategory = async (req, res) => {
   try {
-    const deleted = await Category.findByIdAndDelete(req.params.id);
+    const category = await Category.findById(req.params.id);
 
-    if (!deleted) {
+    if (!category) {
       return res.status(404).json({
         status: "error",
         message: "Category not found",
       });
     }
+
+    if (
+      !category.user ||
+      category.user.toString() !== req.user._id.toString()
+    ) {
+      return res.status(403).json({
+        status: "error",
+        message: "Cannot delete this category",
+      });
+    }
+
+    await Category.findByIdAndDelete(req.params.id);
 
     res.json({
       status: "success",

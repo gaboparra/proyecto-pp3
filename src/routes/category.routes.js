@@ -9,7 +9,7 @@ import authorization from "../middlewares/authorization.js";
 
 const router = Router();
 
-router.get("/", getCategories);
+router.get("/", authorization, getCategories);
 router.post("/", authorization, createCategory);
 router.put("/:id", authorization, updateCategory);
 router.delete("/:id", authorization, deleteCategory);

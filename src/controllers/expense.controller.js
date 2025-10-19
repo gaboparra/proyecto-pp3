@@ -70,10 +70,18 @@ export const getExpenses = async (req, res) => {
 export const updateExpense = async (req, res) => {
   try {
     const expense = await Expense.findById(req.params.id);
+
     if (!expense) {
       return res.status(404).json({
         status: "error",
         message: "Expense not found",
+      });
+    }
+
+    if (expense.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        status: "error",
+        message: "You can only modify your own expenses",
       });
     }
 
@@ -109,10 +117,18 @@ export const updateExpense = async (req, res) => {
 export const deleteExpense = async (req, res) => {
   try {
     const expense = await Expense.findById(req.params.id);
+
     if (!expense) {
       return res.status(404).json({
         status: "error",
         message: "Expense not found",
+      });
+    }
+
+    if (expense.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        status: "error",
+        message: "You can only delete your own expenses",
       });
     }
 
