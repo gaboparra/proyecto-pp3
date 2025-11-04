@@ -1,0 +1,141 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    padding-bottom: 120px;
+}
+
+.logo-box {
+    position: absolute;
+    top: 80px;
+    left: 20px;
+    background-color: #000;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 15px;
+    font-weight: bold;
+    z-index: 10;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.page-title {
+    text-align: center;
+    padding: 100px 20px 40px;
+    font-size: 38px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.expenses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.category-column {
+    background: transparent;
+}
+
+.category-header {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #fff;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+.expense-item {
+    background-color: white;
+    color: #333;
+    padding: 18px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    border-radius: 12px;
+    line-height: 1.6;
+}
+
+.btn-edit {
+    position: fixed;
+    bottom: 110px;
+    right: 40px;
+    background-color: #667eea;
+    color: white;
+    padding: 16px 45px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #000;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.no-expenses {
+    text-align: center;
+    padding: 60px 40px;
+    color: white;
+    font-size: 20px;
+    grid-column: 1 / -1;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+}
+
+.alert {
+    max-width: 1400px;
+    margin: 0 auto 20px;
+    padding: 15px 40px;
+    border-radius: 10px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+@media (max-width: 768px) {
+    .expenses-grid {
+        grid-template-columns: 1fr;
+        padding: 0 20px;
+    }
+    
+    .btn-edit {
+        right: 20px;
+        bottom: 90px;
+        padding: 12px 30px;
+        font-size: 14px;
+    }
+
+    .page-title {
+        font-size: 28px;
+        padding: 80px 20px 30px;
+    }
+}
