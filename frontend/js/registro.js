@@ -39,21 +39,6 @@ async function cargarPaises() {
     
   } catch (err) {
     console.error("✗ Error al cargar países:", err);
-    // Si falla, dejar algunos países por defecto
-    countrySelect.innerHTML = `
-      <option value="">Selecciona tu país</option>
-      <option value="Argentina">Argentina</option>
-      <option value="Brasil">Brasil</option>
-      <option value="Chile">Chile</option>
-      <option value="Colombia">Colombia</option>
-      <option value="España">España</option>
-      <option value="México">México</option>
-      <option value="Perú">Perú</option>
-      <option value="Uruguay">Uruguay</option>
-      <option value="Venezuela">Venezuela</option>
-      <option value="Otro">Otro</option>
-    `;
-    console.log("Países por defecto cargados");
   }
 }
 
