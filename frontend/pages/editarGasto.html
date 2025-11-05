@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado de Gastos - Control de Gastos</title>
+    <title>Editar Gasto - Control de Gastos</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- CSS personalizado -->
-    <link rel="stylesheet" href="../css/listaGastos.css">
+    <link rel="stylesheet" href="../css/editarGasto.css">
 </head>
 <body>
     <!-- Navbar -->
@@ -36,25 +36,57 @@
         </div>
     </nav>
 
-    <a href="home.html" class="logo-box">←</a>
+    <a href="listaGastos.html" class="logo-box">←</a>
 
-    <h1 class="page-title">Listado de gastos</h1>
+    <div class="page-container">
+        <h1 class="page-title">Editar Gasto</h1>
 
-    <div id="alertContainer"></div>
+        <div id="alertContainer"></div>
 
-    <div class="expenses-grid" id="expensesGrid">
-        <div class="no-expenses">Cargando gastos...</div>
+        <div class="expenses-list" id="expensesList">
+            <div class="loading">Cargando gastos...</div>
+        </div>
     </div>
 
-    <button class="btn-edit" onclick="window.location.href='editarGasto.html'">EDITAR GASTO</button>
-
     <div class="footer">© 2024 Control de Gastos - Todos los derechos reservados</div>
+
+    <!-- Modal para editar -->
+    <div class="modal-overlay" id="editModal" style="display: none;">
+        <div class="modal-content">
+            <h2>Editar Gasto</h2>
+            <form id="editForm">
+                <input type="hidden" id="editExpenseId">
+                
+                <div class="form-group">
+                    <label for="editAmount">CANTIDAD DINERO</label>
+                    <input type="number" id="editAmount" step="0.01" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editCategory">CATEGORÍA</label>
+                    <select id="editCategory" required>
+                        <option value="">Seleccione una categoría</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="editDate">FECHA</label>
+                    <input type="date" id="editDate" required>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-save">GUARDAR</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal()">CANCELAR</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Navbar handler -->
     <script src="../js/navbar.js"></script>
     <!-- JS personalizado -->
-    <script src="../js/listaGastos.js"></script>
+    <script src="../js/editarGasto.js"></script>
 </body>
 </html>

@@ -49,8 +49,16 @@ document.getElementById('expenseForm').addEventListener('submit', async (e) => {
         return;
     }
 
+    const amount = parseFloat(document.getElementById('amount').value);
+
+    // Validar que el monto sea positivo
+    if (amount <= 0) {
+        showAlert('El monto debe ser mayor a 0', 'error');
+        return;
+    }
+
     const formData = {
-        amount: parseFloat(document.getElementById('amount').value),
+        amount: amount,
         category: document.getElementById('category').value,
         description: 'Gasto registrado',
         date: document.getElementById('date').value
