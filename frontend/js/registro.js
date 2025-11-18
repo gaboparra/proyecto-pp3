@@ -60,7 +60,7 @@ form.addEventListener("submit", async (e) => {
       responseText.textContent = "Usuario registrado correctamente";
       responseText.className = "success";
 
-      window.location.href = "/frontend/pages/login.html";
+      window.location.href = "login.html";
 
     } else {
       responseText.textContent = "Error: " + (result.message || "Error desconocido");

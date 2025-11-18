@@ -19,7 +19,7 @@ form.addEventListener("submit", async (e) => {
     const result = await res.json();
     
     if (res.ok) {
-      responseText.textContent = "Ingresando correctamente";
+      responseText.textContent = "Entrando";
       responseText.className = "success";
       
       const token = result.payload?.token;

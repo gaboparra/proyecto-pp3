@@ -110,9 +110,7 @@ function displayExpenses(expenses) {
     container.innerHTML = html;
 }
 
-function openEditModal(expenseId) {
-    console.log('Abriendo modal para expense:', expenseId);
-    
+function openEditModal(expenseId) { 
     const expense = allExpenses.find(exp => exp._id === expenseId);
     
     if (!expense) {
@@ -120,8 +118,6 @@ function openEditModal(expenseId) {
         showAlert('Error al cargar el gasto', 'error');
         return;
     }
-
-    console.log('Gasto encontrado:', expense);
     
     document.getElementById('editExpenseId').value = expense._id;
     document.getElementById('editAmount').value = expense.amount;
@@ -171,8 +167,6 @@ document.getElementById('editForm').addEventListener('submit', async (e) => {
     const expenseId = document.getElementById('editExpenseId').value;
     const amount = parseFloat(document.getElementById('editAmount').value);
 
-    console.log('Guardando cambios para expense:', expenseId);
-
     if (amount <= 0) {
         showAlert('El monto debe ser mayor a 0', 'error');
         return;
@@ -184,8 +178,6 @@ document.getElementById('editForm').addEventListener('submit', async (e) => {
         date: document.getElementById('editDate').value
     };
 
-    console.log('Datos a enviar:', formData);
-
     try {
         const response = await fetch(`${API_URL}/expenses/${expenseId}`, {
             method: 'PUT',
@@ -196,10 +188,7 @@ document.getElementById('editForm').addEventListener('submit', async (e) => {
             body: JSON.stringify(formData)
         });
 
-        console.log('Response status:', response.status);
-
         const data = await response.json();
-        console.log('Response data:', data);
 
         if (response.ok && data.status === 'success') {
             showAlert('Gasto actualizado exitosamente', 'success');

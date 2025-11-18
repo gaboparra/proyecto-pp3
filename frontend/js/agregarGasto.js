@@ -59,7 +59,6 @@ document.getElementById('expenseForm').addEventListener('submit', async (e) => {
     const formData = {
         amount: amount,
         category: document.getElementById('category').value,
-        description: 'Gasto registrado',
         date: document.getElementById('date').value
     };
 
