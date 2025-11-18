@@ -3,9 +3,8 @@ const API_URL = 'http://localhost:8080/api';
 function showAlert(message, type) {
     const container = document.getElementById('alertContainer');
     container.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
-    setTimeout(() => {
-        container.innerHTML = '';
-    }, 3000);
+    container.innerHTML = '';
+
 }
 
 function formatCurrency(amount) {
@@ -87,5 +86,4 @@ function displayExpenses(expenses) {
     grid.innerHTML = gridHTML;
 }
 
-// Cargar gastos al iniciar
 loadExpenses();

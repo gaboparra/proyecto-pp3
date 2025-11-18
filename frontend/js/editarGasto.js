@@ -1,5 +1,5 @@
 const API_URL = 'http://localhost:8080/api';
-let allExpenses = []; // Guardar todos los gastos
+let allExpenses = []; 
 
 function showAlert(message, type) {
     const container = document.getElementById('alertContainer');
@@ -70,7 +70,7 @@ async function loadExpenses() {
         const data = await response.json();
 
         if (response.ok && data.status === 'success') {
-            allExpenses = data.payload; // Guardar gastos
+            allExpenses = data.payload; 
             displayExpenses(data.payload);
         } else {
             showAlert(data.message || 'Error al cargar los gastos', 'error');
@@ -113,7 +113,6 @@ function displayExpenses(expenses) {
 function openEditModal(expenseId) {
     console.log('Abriendo modal para expense:', expenseId);
     
-    // Buscar el gasto en la lista que ya tenemos
     const expense = allExpenses.find(exp => exp._id === expenseId);
     
     if (!expense) {
@@ -215,6 +214,5 @@ document.getElementById('editForm').addEventListener('submit', async (e) => {
     }
 });
 
-// Cargar datos al iniciar
 loadCategories();
 loadExpenses();

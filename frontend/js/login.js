@@ -27,9 +27,9 @@ form.addEventListener("submit", async (e) => {
       if (token) {
         localStorage.setItem("token", token);
         
-        setTimeout(() => {
-          window.location.href = "home.html";
-        }, 1000);
+        
+        window.location.href = "home.html";
+        
       } else {
         responseText.textContent = "Error: No se recibió token del servidor";
         responseText.className = "error";

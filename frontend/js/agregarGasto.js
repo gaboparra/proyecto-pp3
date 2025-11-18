@@ -51,7 +51,6 @@ document.getElementById('expenseForm').addEventListener('submit', async (e) => {
 
     const amount = parseFloat(document.getElementById('amount').value);
 
-    // Validar que el monto sea positivo
     if (amount <= 0) {
         showAlert('El monto debe ser mayor a 0', 'error');
         return;
@@ -89,8 +88,6 @@ document.getElementById('expenseForm').addEventListener('submit', async (e) => {
     }
 });
 
-// Inicializar fecha actual
 document.getElementById('date').valueAsDate = new Date();
 
-// Cargar categorías al iniciar
 loadCategories();
