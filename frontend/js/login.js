@@ -1,6 +1,11 @@
 const form = document.getElementById("loginForm");
 const responseText = document.getElementById("response");
 
+// Si ya hay sesión activa, redirigir directo al home
+if (localStorage.getItem("token")) {
+  window.location.replace("home.html");
+}
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -17,19 +22,21 @@ form.addEventListener("submit", async (e) => {
     });
 
     const result = await res.json();
-    
+
     if (res.ok) {
       responseText.textContent = "Entrando";
       responseText.className = "success";
-      
+
       const token = result.payload?.token;
-      
+
       if (token) {
         localStorage.setItem("token", token);
-        
-        
-        window.location.href = "home.html";
-        
+
+        // Si venía de una página protegida, redirigir allí; si no, al home
+        const params = new URLSearchParams(window.location.search);
+        const redirect = params.get("redirect");
+        window.location.href = redirect ? decodeURIComponent(redirect) : "home.html";
+
       } else {
         responseText.textContent = "Error: No se recibió token del servidor";
         responseText.className = "error";
