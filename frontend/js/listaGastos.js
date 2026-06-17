@@ -3,7 +3,7 @@ const API_URL = "/api";
 function showAlert(message, type) {
   const container = document.getElementById("alertContainer");
   container.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
-  container.innerHTML = "";
+  setTimeout(() => { container.innerHTML = ""; }, 3000);
 }
 
 function formatCurrency(amount) {
@@ -24,22 +24,19 @@ async function loadExpenses() {
 
   try {
     const response = await fetch(`${API_URL}/expenses`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const data = await response.json();
 
     if (response.ok && data.status === "success") {
-      const expenses = data.payload;
-      displayExpenses(expenses);
+      displayExpenses(data.payload);
     } else {
-      showAlert(data.message || "Error al cargar los gastos", "error");
+      showAlert(data.message || "Error al cargar los gastos", "danger");
     }
   } catch (error) {
     console.error("Error:", error);
-    showAlert("Error de conexión", "error");
+    showAlert("Error de conexión", "danger");
   }
 }
 
@@ -47,42 +44,25 @@ function displayExpenses(expenses) {
   const grid = document.getElementById("expensesGrid");
 
   if (expenses.length === 0) {
-    grid.innerHTML = '<div class="no-expenses">No hay gastos registrados</div>';
+    grid.innerHTML = '<div class="no-expenses">No hay gastos registrados todavía</div>';
     return;
   }
 
-  const expensesByCategory = {};
+  // Ordenar por fecha descendente, más reciente primero
+  const sorted = [...expenses].sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  expenses.forEach((expense) => {
+  grid.innerHTML = sorted.map((expense) => {
     const categoryName = expense.category?.name || "Sin categoría";
-    if (!expensesByCategory[categoryName]) {
-      expensesByCategory[categoryName] = [];
-    }
-    expensesByCategory[categoryName].push(expense);
-  });
+    const color = expense.category?.color || "#f0a500";
 
-  let gridHTML = "";
-
-  Object.keys(expensesByCategory).forEach((categoryName) => {
-    gridHTML += `
-            <div class="category-column">
-                <div class="category-header">${categoryName}</div>
-        `;
-
-    expensesByCategory[categoryName].forEach((expense) => {
-      gridHTML += `
-                <div class="expense-item">
-                    ${formatDate(expense.date)}<br>
-                    ${formatCurrency(expense.amount)}<br>
-                    ${expense.description || "Sin descripción"}
-                </div>
-            `;
-    });
-
-    gridHTML += `</div>`;
-  });
-
-  grid.innerHTML = gridHTML;
+    return `
+      <div class="expense-card" style="--category-color: ${color}">
+        <div class="amount">${formatCurrency(expense.amount)}</div>
+        <div class="category">${categoryName}</div>
+        <div class="date">${formatDate(expense.date)}</div>
+      </div>
+    `;
+  }).join("");
 }
 
 loadExpenses();

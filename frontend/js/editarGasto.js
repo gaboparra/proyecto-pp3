@@ -30,9 +30,7 @@ async function loadCategories() {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(`${API_URL}/categories`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const data = await response.json();
@@ -62,9 +60,7 @@ async function loadExpenses() {
 
   try {
     const response = await fetch(`${API_URL}/expenses`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const data = await response.json();
@@ -73,11 +69,11 @@ async function loadExpenses() {
       allExpenses = data.payload;
       displayExpenses(data.payload);
     } else {
-      showAlert(data.message || "Error al cargar los gastos", "error");
+      showAlert(data.message || "Error al cargar los gastos", "danger");
     }
   } catch (error) {
     console.error("Error:", error);
-    showAlert("Error de conexión", "error");
+    showAlert("Error de conexión", "danger");
   }
 }
 
@@ -86,29 +82,31 @@ function displayExpenses(expenses) {
 
   if (expenses.length === 0) {
     container.innerHTML =
-      '<div class="no-expenses">No hay gastos registrados</div>';
+      '<div class="loading">No hay gastos registrados</div>';
     return;
   }
 
-  let html = "";
+  const sorted = [...expenses].sort(
+    (a, b) => new Date(b.date) - new Date(a.date),
+  );
 
-  expenses.forEach((expense) => {
-    html += `
-            <div class="expense-card">
-                <h3>${formatCurrency(expense.amount)}</h3>
-                <div class="expense-info">
-                    <strong>Categoría:</strong> ${expense.category?.name || "Sin categoría"}<br>
-                    <strong>Fecha:</strong> ${formatDate(expense.date)}
-                </div>
-                <div class="expense-actions">
-                    <button class="btn-edit-card" onclick="openEditModal('${expense._id}')">EDITAR</button>
-                    <button class="btn-delete-card" onclick="deleteExpense('${expense._id}')">ELIMINAR</button>
-                </div>
-            </div>
-        `;
-  });
+  container.innerHTML = sorted
+    .map((expense) => {
+      const categoryName = expense.category?.name || "Sin categoría";
+      const color = expense.category?.color || "#f0a500";
 
-  container.innerHTML = html;
+      return `
+      <div class="expense-item" style="--category-color: ${color}">
+        <div class="info">
+          <div class="amount">${formatCurrency(expense.amount)}</div>
+          <div class="meta">${categoryName} · ${formatDate(expense.date)}</div>
+        </div>
+        <button class="btn-item-edit" onclick="openEditModal('${expense._id}')">Editar</button>
+        <button class="btn-item-edit" onclick="deleteExpense('${expense._id}')">Eliminar</button>
+      </div>
+    `;
+    })
+    .join("");
 }
 
 function openEditModal(expenseId) {
@@ -116,7 +114,7 @@ function openEditModal(expenseId) {
 
   if (!expense) {
     console.error("No se encontró el gasto");
-    showAlert("Error al cargar el gasto", "error");
+    showAlert("Error al cargar el gasto", "danger");
     return;
   }
 
@@ -133,18 +131,14 @@ function closeModal() {
 }
 
 async function deleteExpense(expenseId) {
-  if (!confirm("¿Está seguro que desea eliminar este gasto?")) {
-    return;
-  }
+  if (!confirm("¿Está seguro que desea eliminar este gasto?")) return;
 
   const token = localStorage.getItem("token");
 
   try {
     const response = await fetch(`${API_URL}/expenses/${expenseId}`, {
       method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const data = await response.json();
@@ -153,11 +147,11 @@ async function deleteExpense(expenseId) {
       showAlert("Gasto eliminado exitosamente", "success");
       loadExpenses();
     } else {
-      showAlert(data.message || "Error al eliminar el gasto", "error");
+      showAlert(data.message || "Error al eliminar el gasto", "danger");
     }
   } catch (error) {
     console.error("Error:", error);
-    showAlert("Error de conexión", "error");
+    showAlert("Error de conexión", "danger");
   }
 }
 
@@ -169,7 +163,7 @@ document.getElementById("editForm").addEventListener("submit", async (e) => {
   const amount = parseFloat(document.getElementById("editAmount").value);
 
   if (amount <= 0) {
-    showAlert("El monto debe ser mayor a 0", "error");
+    showAlert("El monto debe ser mayor a 0", "danger");
     return;
   }
 
@@ -196,11 +190,11 @@ document.getElementById("editForm").addEventListener("submit", async (e) => {
       closeModal();
       loadExpenses();
     } else {
-      showAlert(data.message || "Error al actualizar el gasto", "error");
+      showAlert(data.message || "Error al actualizar el gasto", "danger");
     }
   } catch (error) {
     console.error("Error:", error);
-    showAlert("Error de conexión", "error");
+    showAlert("Error de conexión", "danger");
   }
 });
 

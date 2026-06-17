@@ -170,7 +170,7 @@ body {
   gap: 0.75rem;
 }
 
-/* Individual expense row (JS will generate these) */
+/* Individual expense row */
 .expense-item {
   display: flex;
   align-items: center;
@@ -216,6 +216,7 @@ body {
   margin-top: 0.2rem;
 }
 
+/* Agrupa los botones de acción a la derecha */
 .expense-item .btn-item-edit {
   padding: 0.5rem 1rem;
   background: transparent;
@@ -229,12 +230,20 @@ body {
   cursor: pointer;
   transition: all var(--transition);
   white-space: nowrap;
+  margin-left: 0.5rem;
 }
 
 .expense-item .btn-item-edit:hover {
   border-color: var(--accent);
   color: var(--accent);
   background: var(--accent-glow);
+}
+
+/* El segundo botón (Eliminar) resalta en rojo al hover */
+.expense-item .btn-item-edit:last-of-type:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: rgba(244, 63, 94, 0.08);
 }
 
 /* ── Loading state ───────────────────────────────────── */
