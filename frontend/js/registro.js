@@ -2,37 +2,25 @@ const form = document.getElementById("registerForm");
 const responseText = document.getElementById("response");
 const countrySelect = document.getElementById("country");
 
-async function cargarPaises() {
-  try {
-    const res = await fetch("https://restcountries.com/v3.1/all?fields=name,translations");
-    
-    if (!res.ok) {
-      throw new Error("Error al cargar países");
-    }
-    
-    const paises = await res.json();
-    
-    paises.sort((a, b) => {
-      const nombreA = a.translations?.spa?.common || a.name.common;
-      const nombreB = b.translations?.spa?.common || b.name.common;
-      return nombreA.localeCompare(nombreB);
-    });
-    
-    countrySelect.innerHTML = '<option value="">Selecciona tu país</option>';
-    
-    paises.forEach(pais => {
-      const option = document.createElement("option");
-      const nombrePais = pais.translations?.spa?.common || pais.name.common;
-      option.value = nombrePais;
-      option.textContent = nombrePais;
-      countrySelect.appendChild(option);
-    });
-    
-    console.log("✓ Países cargados exitosamente:", countrySelect.options.length);
-    
-  } catch (err) {
-    console.error("✗ Error al cargar países:", err);
-  }
+const PAISES = [
+  "Argentina", "Bolivia", "Brasil", "Chile", "Colombia", "Costa Rica",
+  "Cuba", "Ecuador", "El Salvador", "España", "Estados Unidos",
+  "Guatemala", "Honduras", "México", "Nicaragua", "Panamá",
+  "Paraguay", "Perú", "Puerto Rico", "República Dominicana",
+  "Uruguay", "Venezuela",
+  "Alemania", "Francia", "Italia", "Portugal", "Reino Unido",
+  "Canadá", "Otro",
+];
+
+function cargarPaises() {
+  countrySelect.innerHTML = '<option value="">Selecciona tu país</option>';
+
+  PAISES.forEach((pais) => {
+    const option = document.createElement("option");
+    option.value = pais;
+    option.textContent = pais;
+    countrySelect.appendChild(option);
+  });
 }
 
 document.addEventListener("DOMContentLoaded", cargarPaises);
@@ -48,22 +36,22 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
-    const res = await fetch("http://localhost:8080/api/auth/register", {
+    const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
 
     const result = await res.json();
-    
+
     if (res.ok) {
       responseText.textContent = "Usuario registrado correctamente";
       responseText.className = "success";
 
-      window.location.href = "login.html";
-
+      window.location.href = "/pages/login.html";
     } else {
-      responseText.textContent = "Error: " + (result.message || "Error desconocido");
+      responseText.textContent =
+        "Error: " + (result.message || "Error desconocido");
       responseText.className = "error";
     }
   } catch (err) {

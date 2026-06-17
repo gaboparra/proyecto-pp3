@@ -1,34 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap");
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 :root {
-  --bg-base:       #080c18;
-  --bg-surface:    #0f1629;
-  --bg-card:       #141d35;
-  --bg-input:      #1a2440;
-  --border:        rgba(255, 255, 255, 0.07);
-  --border-hover:  rgba(255, 255, 255, 0.15);
-  --accent:        #f0a500;
-  --accent-dim:    #c98b00;
-  --accent-glow:   rgba(240, 165, 0, 0.15);
-  --text-primary:  #eef2ff;
-  --text-secondary:#8a94b0;
-  --text-muted:    #4a5270;
-  --success:       #22c55e;
-  --danger:        #f43f5e;
-  --radius-sm:     8px;
-  --radius-md:     14px;
-  --radius-lg:     20px;
-  --transition:    0.22s ease;
-  --font:          'Outfit', sans-serif;
+  --bg-base: #080c18;
+  --bg-surface: #0f1629;
+  --bg-card: #141d35;
+  --bg-input: #1a2440;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-hover: rgba(255, 255, 255, 0.15);
+  --accent: #f0a500;
+  --accent-dim: #c98b00;
+  --accent-glow: rgba(240, 165, 0, 0.15);
+  --text-primary: #eef2ff;
+  --text-secondary: #8a94b0;
+  --text-muted: #4a5270;
+  --success: #22c55e;
+  --danger: #f43f5e;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --transition: 0.22s ease;
+  --font: "Outfit", sans-serif;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -39,8 +42,11 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-image:
-    radial-gradient(ellipse 60% 50% at 50% -10%, rgba(240, 165, 0, 0.07) 0%, transparent 70%);
+  background-image: radial-gradient(
+    ellipse 60% 50% at 50% -10%,
+    rgba(240, 165, 0, 0.07) 0%,
+    transparent 70%
+  );
 }
 
 /* ── Navbar ─────────────────────────────────────────── */
@@ -60,7 +66,7 @@ body {
 }
 
 .navbar-brand::before {
-  content: '◈ ';
+  content: "◈ ";
   color: var(--accent);
 }
 
@@ -77,7 +83,7 @@ body {
 .nav-link:hover,
 .nav-link.active {
   color: var(--text-primary) !important;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 /* ── Login Container ────────────────────────────────── */
@@ -104,7 +110,7 @@ body {
 }
 
 .container h1::after {
-  content: '';
+  content: "";
   display: block;
   width: 40px;
   height: 3px;
@@ -134,7 +140,9 @@ body {
   color: var(--text-primary);
   font-family: var(--font);
   font-size: 0.9rem;
-  transition: border-color var(--transition), box-shadow var(--transition);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
   outline: none;
 }
 

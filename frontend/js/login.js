@@ -3,7 +3,7 @@ const responseText = document.getElementById("response");
 
 // Si ya hay sesión activa, redirigir directo al home
 if (localStorage.getItem("token")) {
-  window.location.replace("home.html");
+  window.location.replace("/pages/home.html");
 }
 
 form.addEventListener("submit", async (e) => {
@@ -15,7 +15,7 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
-    const res = await fetch("http://localhost:8080/api/auth/login", {
+    const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -35,14 +35,17 @@ form.addEventListener("submit", async (e) => {
         // Si venía de una página protegida, redirigir allí; si no, al home
         const params = new URLSearchParams(window.location.search);
         const redirect = params.get("redirect");
-        window.location.href = redirect ? decodeURIComponent(redirect) : "home.html";
-
+        window.location.href = redirect
+          ? decodeURIComponent(redirect)
+          : "/pages/home.html";
       } else {
         responseText.textContent = "Error: No se recibió token del servidor";
         responseText.className = "error";
       }
     } else {
-      responseText.textContent = "Error: " + (result.message || "Correo electrónico o contraseña incorrectos");
+      responseText.textContent =
+        "Error: " +
+        (result.message || "Correo electrónico o contraseña incorrectos");
       responseText.className = "error";
     }
   } catch (err) {

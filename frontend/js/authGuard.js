@@ -8,6 +8,6 @@
 
   if (!token) {
     const redirect = encodeURIComponent(window.location.pathname);
-    window.location.replace("login.html?redirect=" + redirect);
+    window.location.replace("/pages/login.html?redirect=" + redirect);
   }
 })();
