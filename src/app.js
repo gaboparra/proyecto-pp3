@@ -12,7 +12,7 @@ import authRoutes from "./routes/auth.routes.js";
 import notFound from "./middlewares/notFound.js";
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname  = path.dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -31,7 +31,7 @@ app.use("/api/auth", authRoutes);
 // Frontend
 app.use(express.static(path.join(__dirname, "../frontend")));
 
-// Ruta principal -> home.html (no hay index.html)
+// Ruta principal
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/pages/home.html"));
 });

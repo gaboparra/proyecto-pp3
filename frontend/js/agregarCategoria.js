@@ -8,7 +8,8 @@ function showAlert(message, type) {
   }, 3000);
 }
 
-document.getElementById("categoryForm")
+document
+  .getElementById("categoryForm")
   .addEventListener("submit", async (e) => {
     e.preventDefault();
 

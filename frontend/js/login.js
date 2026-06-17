@@ -1,7 +1,6 @@
 const form = document.getElementById("loginForm");
 const responseText = document.getElementById("response");
 
-// Si ya hay sesión activa, redirigir directo al home
 if (localStorage.getItem("token")) {
   window.location.replace("/pages/home.html");
 }
@@ -32,7 +31,6 @@ form.addEventListener("submit", async (e) => {
       if (token) {
         localStorage.setItem("token", token);
 
-        // Si venía de una página protegida, redirigir allí; si no, al home
         const params = new URLSearchParams(window.location.search);
         const redirect = params.get("redirect");
         window.location.href = redirect
