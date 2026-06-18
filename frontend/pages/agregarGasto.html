@@ -13,7 +13,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="/pages/home.html">
-        <img src="/assets/moneydor-icon-1-removebg-preview.png" alt="Moneydor" class="navbar-logo">
+        <img src="/assets/moneydor-icon-1-removebg-preview.png" alt="Moneydor" class="navbar-logo" />
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
@@ -39,31 +39,33 @@
 
   <a href="/pages/home.html" class="logo-box">←</a>
 
-  <div class="form-container">
-    <h1>Agregar gasto</h1>
+  <div class="main-content">
+    <div class="form-container">
+      <h1>Agregar gasto</h1>
 
-    <div id="alertContainer"></div>
+      <div id="alertContainer"></div>
 
-    <form id="expenseForm">
-      <div class="form-group">
-        <label for="amount">CANTIDAD DINERO</label>
-        <input type="number" id="amount" name="amount" step="0.01" min="0" required />
-      </div>
+      <form id="expenseForm">
+        <div class="form-group">
+          <label for="amount">CANTIDAD DINERO</label>
+          <input type="number" id="amount" name="amount" step="0.01" min="0" required />
+        </div>
 
-      <div class="form-group">
-        <label for="category">CATEGORÍA</label>
-        <select id="category" name="category" required>
-          <option value="">Seleccione una categoría</option>
-        </select>
-      </div>
+        <div class="form-group">
+          <label for="category">CATEGORÍA</label>
+          <select id="category" name="category" required>
+            <option value="">Seleccione una categoría</option>
+          </select>
+        </div>
 
-      <div class="form-group">
-        <label for="date">FECHA</label>
-        <input type="date" id="date" name="date" required />
-      </div>
+        <div class="form-group">
+          <label for="date">FECHA</label>
+          <input type="date" id="date" name="date" required />
+        </div>
 
-      <button type="submit" class="btn-submit">AGREGAR</button>
-    </form>
+        <button type="submit" class="btn-submit">AGREGAR</button>
+      </form>
+    </div>
   </div>
 
   <div class="footer bg-dark">
