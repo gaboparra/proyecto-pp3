@@ -2,22 +2,23 @@ const API_URL = "/api";
 
 function showAlert(message, type) {
   const container = document.getElementById("alertContainer");
-  container.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+
+  container.innerHTML = `
+    <div class="alert alert-${type}">
+      ${message}
+    </div>
+  `;
+
   setTimeout(() => {
     container.innerHTML = "";
   }, 3000);
 }
 
-document
-  .getElementById("categoryForm")
+document.getElementById("categoryForm")
   .addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const token = localStorage.getItem("token");
-    if (!token) {
-      window.location.href = "/pages/login.html";
-      return;
-    }
 
     const formData = {
       name: document.getElementById("name").value,
@@ -38,13 +39,16 @@ document
 
       if (response.ok && data.status === "success") {
         showAlert("Categoría agregada exitosamente", "success");
+
         document.getElementById("categoryForm").reset();
+
         document.getElementById("color").value = "#000000";
       } else {
-        showAlert(data.message || "Error al agregar la categoría", "error");
+        showAlert(data.message || "Error al agregar la categoría", "danger");
       }
     } catch (error) {
-      console.error("Error:", error);
-      showAlert("Error de conexión", "error");
+      console.error(error);
+
+      showAlert("Error de conexión", "danger");
     }
   });
