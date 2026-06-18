@@ -43,7 +43,7 @@ form.addEventListener("submit", async (e) => {
     } else {
       responseText.textContent =
         "Error: " +
-        (result.message || "Correo electrónico o contraseña incorrectos");
+        ("Correo electrónico o contraseña incorrectos");
       responseText.className = "error";
     }
   } catch (err) {

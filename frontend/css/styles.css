@@ -166,6 +166,14 @@ a {
   margin-top: 0.5rem;
 }
 
+#response.success {
+  color: #22c55e;
+}
+
+#response.error {
+  color: var(--danger);
+}
+
 .register-link {
   text-align: center;
   margin-top: 1rem;
